@@ -1,0 +1,5 @@
+.pydevproject
+.project
+src/run/*
+src/log/*
+src/conf/*
