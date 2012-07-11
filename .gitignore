@@ -3,3 +3,6 @@
 src/run/*
 src/log/*
 src/conf/*
+src/build
+src/dist
+*egg-info*

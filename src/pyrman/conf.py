@@ -4,7 +4,7 @@ Created on 18.03.2012
 @author: vladandr
 '''
 
-import confParsing
+import fido_common.confparsing as confparsing
 import os
 
 TPL_DIR = "rman_tpl"
@@ -61,6 +61,15 @@ class SMTP(object):
     rcpt = ''
 
 
+class Monitoring(object):
+    '''Holds configuration of monitoring system like Zabbix
+    '''
+    system = ''
+    host = ''
+    port = ''
+    is_enabled = False
+
+
 
 class AppConf(object):
     '''Configuration module    
@@ -72,14 +81,15 @@ class AppConf(object):
         self.log_file = ''
         self.log_level = ''
         
-        confParsing.setRunConfFile(run_file=self.conf_file)
-        self.run_conf = confParsing.runtimeConfParser()
+        confparsing.setRunConfFile(run_file=self.conf_file)
+        self.run_conf = confparsing.RuntimeConfParser()
         
         self.app = App()
         self.ora = Oracle()
         self.bkp = Backup()
         self.rman = RMAN()
         self.smtp = SMTP()
+        self.monitoring = Monitoring()
  
         self.parse()       
     
@@ -157,6 +167,24 @@ class AppConf(object):
                                      (self.app_name, self.ora.sid))
         self.log_level = self.run_conf.getRunOption('logging', 
                                                     'log_level', 'DEBUG')
+
+    def init_monitoring(self):
+        self.monitoring.system = self.run_conf.getRunOption('monitoring',
+                                                            'system',
+                                                            'zabbix')
+        self.monitoring.host = self.run_conf.getRunOption('monitoring',
+                                                          'host', '')
+        self.monitoring.port = self.run_conf.getRunOption('monitoring',
+                                                          'port', 
+                                                          10051,
+                                                          'int')
+        self.monitoring.is_enabled = self.run_conf.getRunOption('monitoring',
+                                                                'is_enabled',
+                                                                'True')
+        self.monitoring.client_host = self.run_conf.getRunOption('monitoring',
+                                                                 'client_host',
+                                                                 '')
+
     def parse(self):        
         '''Parse configuration file and initialize all variables        
         '''
@@ -168,6 +196,7 @@ class AppConf(object):
         self.init_rman()
         self.init_smtp()
         self.init_log()
+        self.init_monitoring()
 
 
         
