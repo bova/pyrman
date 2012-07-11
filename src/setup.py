@@ -1,7 +1,8 @@
 from setuptools import setup
+from pyrman.const import APP_VERSION
 
 setup(name='pyrman',
-	version='0.1',
+	version=APP_VERSION,
 	description='Python RMAN',
 	author='Vladimir Povetkin',
 	author_email='vladimir@fido.uz',
