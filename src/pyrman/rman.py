@@ -4,7 +4,7 @@ Created on 15.03.2012
 @author: bova
 '''
 import logging
-import loggingTool
+import fido_common.loggingtool as loggingtool
 from datetime import date
 import os
 import sys
