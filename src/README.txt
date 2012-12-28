@@ -28,3 +28,19 @@ crosscheck archivelog all;
 crosscheck backup;
 delete expired;
 delete force obsolete;
+
+h2. Error 1
+
+* RMAN-06207
+* RMAN-06214: Datafile Copy   /oracle/11.2.0.3/dbs/snapcf_cebs.f
+
+* delete obsolete;
+ORA-19606: Cannot copy or restore to snapshot control file
+
+h3. Solution
+
+[ID 1215493.1]
+crosscheck  controlfilecopy '/oracle/11.2.0.3/dbs/snapcf_cebs.f';
+CONFIGURE SNAPSHOT CONTROLFILE NAME TO '/oracle/11.2.0.3/dbs/snapcf_cebs.f1';
+delete obsolete;
+CONFIGURE SNAPSHOT CONTROLFILE NAME TO '/oracle/11.2.0.3/dbs/snapcf_cebs.f';
